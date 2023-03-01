@@ -1,7 +1,28 @@
 name: Lint
-on: push
+on: pull_request
 
 jobs:
+  tf-fmt:
+    name: Terraform Format Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: false
+        
+      - name: Terraform fmt stdout
+        run: echo ${{ steps.fmt.outputs.stdout }}
+        
+      - name: Terraform fmt stderr
+        run: echo ${{ steps.fmt.outputs.stderr }}
+        
+      - name: Terraform fmt exitcode
+        run: echo ${{ steps.fmt.outputs.exitcode }}
 
   tflint:
     name: 'TF Lint'
@@ -34,25 +55,3 @@ jobs:
 
     - name: Run TFLint
       run: tflint -f compact
-      
-  tf-fmt:
-    name: Terraform Format Check
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v3
-      - uses: hashicorp/setup-terraform@v2
-
-      - name: Terraform fmt
-        id: fmt
-        run: terraform fmt -check
-        continue-on-error: false
-        
-      - name: Terraform fmt stdout
-        run: echo ${{ steps.fmt.outputs.stdout }}
-        
-      - name: Terraform fmt stderr
-        run: echo ${{ steps.fmt.outputs.stderr }}
-        
-      - name: Terraform fmt exitcode
-        run: echo ${{ steps.fmt.outputs.exitcode }}
