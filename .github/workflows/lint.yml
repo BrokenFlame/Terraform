@@ -48,7 +48,11 @@ jobs:
         run: terraform fmt -check
         continue-on-error: false
         
-      - run: echo ${{ steps.fmt.outputs.stdout }}
-      - run: echo ${{ steps.fmt.outputs.stderr }}
-      - run: echo ${{ steps.fmt.outputs.exitcode }}
+      - name: Terraform fmt stdout
+        run: echo ${{ steps.fmt.outputs.stdout }}
         
+      - name: Terraform fmt stderr
+        run: echo ${{ steps.fmt.outputs.stderr }}
+        
+      - name: Terraform fmt exitcode
+        run: echo ${{ steps.fmt.outputs.exitcode }}
