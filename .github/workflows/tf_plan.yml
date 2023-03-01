@@ -1,9 +1,32 @@
 name: Terraform Plan
-on: push
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Terraform action to execute.'
+        required: true
+        default: 'plan'
+        type: choice
+        options:
+        - plan
+        - apply
+        - destroy
+      environment:
+        description: 'Environment to execute Terraform against.'
+        type: choice
+        required: true
+        options:
+        - development
+        - qa
+        - uat
+        - staging
+        - production
 
 jobs:
   terraform-plan:
     runs-on: ubuntu-latest
+    if:  ${{ inputs.action }} == "plan"
     steps:
       - uses: hashicorp/setup-terraform@v2
         with:
