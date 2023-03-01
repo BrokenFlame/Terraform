@@ -26,7 +26,7 @@ on:
 jobs:
   terraform-plan:
     runs-on: ubuntu-latest
-    if:  ${{ inputs.action }} == "plan"
+    if:  ${{ inputs.action == 'plan' }}
     steps:
       - uses: hashicorp/setup-terraform@v2
         with:
