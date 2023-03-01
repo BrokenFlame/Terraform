@@ -30,6 +30,30 @@ jobs:
         
       - name: Terraform fmt exitcode
         run: echo ${{ steps.fmt.outputs.exitcode }}
+    
+  tf-validate:
+    name: Terraform  Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+    
+      - name: Terraform Init without Backend
+        run: terraform init -backend=false
+      
+      - name: Terraform Validate  
+        id: validate
+        run: terraform validate -no-color
+        
+      - name: Terraform validate stdout
+        run: echo ${{ steps.validate.outputs.stdout }}
+        
+      - name: Terraform validate stderr
+        run: echo ${{ steps.validate.outputs.stderr }}
+        
+      - name: Terraform validate exitcode
+        run: echo ${{ steps.validate.outputs.exitcode }}
 
   tflint:
     name: 'TF Lint'
